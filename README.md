@@ -1,46 +1,153 @@
-# Labyrinth-Funkspiel
+# Spielesammlung
 
-Eine kindgerechte React-Webanwendung für ein 3-Personen-Labyrinthspiel mit den Rollen Beobachter, Bote und Spieler.
+Eine React- und Vite-Webanwendung mit zwei vollständig clientseitigen Spielen:
 
-## Funktionen
+- `Maze Game`: das bestehende Labyrinthspiel, unverändert eingebunden
+- `Puzzle Game`: ein neues Bildpuzzle mit Admin-Modus und Spielmodus
 
-- Startseite mit zwei großen Rollen-Buttons
-- Passwortschutz für Beobachter- und Spieler-Panel
-- Vollständige Kartenansicht im Beobachter-Panel
-- Manuelle Marker-Nachverfolgung für den Beobachter
-- Vollständig blindes Spieler-Panel ohne sichtbare Nachbarfelder
-- Drei Leben für den Spieler, Wandkontakt kostet ein Leben
-- Nach Verlust aller Leben startet der Spieler wieder am Anfang
-- Bewegung mit Wandprüfung, Statusmeldungen und Gewinnbildschirm
-- Lokale Speicherung über `localStorage`, damit ein Neuladen den Stand nicht sofort löscht
-- Statischer Build ohne Router, dadurch gut für GitHub Pages geeignet
+## Überblick
 
-## Technik
+Die Startseite zeigt zwei große Buttons:
 
-- React
-- Vite
-- TypeScript
-- Reines CSS ohne großes UI-Framework
+- `Maze Game`
+- `Puzzle Game`
+
+`Maze Game` öffnet das vorhandene Labyrinthspiel direkt. `Puzzle Game` öffnet direkt den Spielbildschirm des neuen Puzzlesystems.
+
+## Maze Game
+
+Das Maze Game ist die bereits vorhandene Spiel-Logik und wurde als bestehendes Spiel eingebunden. Es wird im neuen Hauptmenü nur als eigenes Spiel gestartet und intern nicht verändert.
+
+Kurz:
+
+- Passwortgeschützte Beobachter- und Spieler-Ansicht
+- Beobachter sieht das komplette Labyrinth
+- Spieler sieht nur den bereits gegangenen Weg
+- Wandkontakt kostet Leben
+- Admin kann im Spielerbildschirm Leben hinzufügen
+
+## Puzzle Game
+
+Das Puzzle Game besteht aus zwei Bereichen:
+
+### 1. Puzzle Admin
+
+Hier wird das Puzzle vorbereitet.
+
+Funktionen:
+
+- Projektbild aus dem Projektordner verwenden
+- Vorschau anzeigen
+- Anzahl der Teile erhöhen oder verringern
+- Unregelmäßige Puzzle-Teile erzeugen
+- Neues Layout mit demselben Bild erzeugen
+- Alles zurücksetzen
+- Versteckte Abschlussnachricht festlegen
+- Vorschau-Modi wechseln:
+  - `Image only`
+  - `Image + outlines`
+  - `Piece shapes`
+
+Admin-Zugang:
+
+- Die Admin-Seite wird aus dem Spielbildschirm über den `Admin`-Button geöffnet
+- Passwort: `mocha`
+
+### 2. Puzzle Play
+
+Hier wird das Puzzle gespielt.
+
+Funktionen:
+
+- Puzzlebrett mit Umrissen anzeigen
+- Gemischte Teile im unteren Bereich anzeigen
+- Teile per Drag-and-Drop bewegen
+- Teile in die richtige Position einrasten lassen, wenn sie nah genug liegen
+- Falsche Platzierung erlauben
+- Abschluss erkennen, wenn alle Teile korrekt sitzen
+- Abschlussnachricht anzeigen
+
+Steuerung:
+
+- `Restart Puzzle`
+- `Shuffle Again`
+- `Admin`
+- `Back to Home`
+
+## Wie das Puzzle technisch funktioniert
+
+Das Puzzle verwendet kein einfaches Haupt-Square-Grid. Stattdessen wird eine praktische Voronoi-ähnliche Aufteilung verwendet:
+
+- zufällige Punkte werden über dem Bild verteilt
+- aus diesen Punkten werden unregelmäßige Polygonbereiche erzeugt
+- jede Form wird als eigenes Puzzle-Stück gerendert
+
+Dadurch entstehen:
+
+- diagonale Kanten
+- unterschiedliche Größen
+- kindgerechte, aber nicht nur rechteckige Stücke
+
+## Admin-Modus verwenden
+
+1. Bilddatei im Projektordner `public/puzzle-images/puzzle-source.svg` oder an derselben Stelle mit `png/jpg`-Ersatz ablegen
+2. `Puzzle Game` auf der Startseite öffnen
+3. Im Spielbildschirm `Admin` wählen
+4. Passwort `mocha` eingeben
+5. Stückzahl anpassen
+6. Falls nötig `Completion Message` eintragen
+7. Mit `Reload Project Image`, `Generate Pieces` oder `Regenerate Pieces` arbeiten
+8. Mit `Back to Puzzle` zurück ins Spiel
+
+## Projektbild verwenden
+
+- Die Puzzle-Grafik kommt aus dem Projektordner `public/puzzle-images/`
+- Standarddatei: `puzzle-source.svg`
+- Du kannst diese Datei durch eine eigene `png`, `jpg`, `jpeg` oder `svg` Datei mit demselben Namen ersetzen
+- Das Bild wird im Browser geladen und bei Bedarf verkleinert
+
+## Persistenz über localStorage
+
+Gespeichert werden:
+
+- Projektbild als geladene Data URL
+- Puzzle-Layout
+- aktuelle Positionen der Teile
+- versteckte Abschlussnachricht
+- Stückzahl
+
+Wenn das Bild für `localStorage` dennoch zu groß ist, zeigt die App eine Meldung an. Das Puzzle funktioniert dann weiterhin im aktuellen Tab, aber Persistenz kann fehlschlagen.
 
 ## Projektstruktur
 
 ```text
-.
-├── .github/workflows/deploy.yml
-├── index.html
-├── package.json
-├── src
-│   ├── App.tsx
-│   ├── components
-│   ├── config/gameConfig.ts
-│   ├── data/mazes.ts
-│   ├── styles.css
-│   ├── types/game.ts
-│   └── utils
-└── vite.config.ts
+src/
+  App.tsx
+  MainApp.tsx
+  app-shell.css
+  components/
+  games/
+    maze/
+      MazeGameWrapper.tsx
+    puzzle/
+      CompletionModal.tsx
+      ImageUploader.tsx
+      PieceTray.tsx
+      PuzzleAdminScreen.tsx
+      PuzzleBoard.tsx
+      PuzzleGame.tsx
+      PuzzlePiece.tsx
+      PuzzlePlayScreen.tsx
+      PuzzlePreview.tsx
+      types.ts
+  utils/
+    imageProcessing.ts
+    maze.ts
+    puzzleGeneration.ts
+    storage.ts
 ```
 
-## Lokales Starten
+## Lokal starten
 
 ### 1. Abhängigkeiten installieren
 
@@ -54,7 +161,7 @@ npm install
 npm run dev
 ```
 
-Danach zeigt Vite eine lokale Adresse wie `http://localhost:5173` an.
+Danach öffnet Vite eine lokale URL, meist `http://localhost:5173`.
 
 ### 3. Produktions-Build erzeugen
 
@@ -62,76 +169,27 @@ Danach zeigt Vite eine lokale Adresse wie `http://localhost:5173` an.
 npm run build
 ```
 
-Der fertige statische Build landet im Ordner `dist/`.
-
-## Passwörter und Konfiguration anpassen
-
-Die Passwörter liegen bewusst zentral in:
-
-[`src/config/gameConfig.ts`](./src/config/gameConfig.ts)
-
-Dort kannst du die Passwörter, die Anzahl der Leben, die Storage-Keys und das Standard-Labyrinth festlegen.
-
-Standardwerte in diesem Projekt:
-
-- Beobachter-Passwort: `blick123`
-- Spieler-Passwort: `schritt123`
-
-## Labyrinthe erweitern
-
-Neue Karten werden in:
-
-[`src/data/mazes.ts`](./src/data/mazes.ts)
-
-angelegt. Die Datenstruktur ist vorbereitet für weitere Labyrinthe mit:
-
-- `id`
-- `name`
-- `description`
-- `grid`
-- `start`
-- `goal`
-
-## Wichtige Spielregeln dieser Version
-
-Diese Anwendung arbeitet vollständig ohne Backend. Deshalb gibt es **keine Live-Synchronisation zwischen verschiedenen Geräten**.
-
-- Das Spieler-Gerät speichert den echten Spielstand lokal.
-- Das Beobachter-Gerät zeigt die komplette Karte und führt den Marker manuell nach.
-- Der Bote bleibt die Verbindung zwischen beiden Geräten.
-- Der Spieler sieht keine Nachbarfelder und keine Karte.
-- Der Spieler hat 3 Leben. Jeder Wandkontakt kostet 1 Leben.
-- Wenn alle Leben aufgebraucht sind, startet der Spieler wieder am Anfang.
+Der statische Build landet in `dist/`.
 
 ## GitHub Pages Deployment
 
-Die Vite-Konfiguration nutzt relative Asset-Pfade und ist damit für statisches Hosting vorbereitet.
+Das Projekt ist für statisches Hosting vorbereitet.
 
-### Variante A: Automatisch mit GitHub Actions
+### Mit GitHub Actions
 
-1. Ein neues GitHub-Repository anlegen.
-2. Den kompletten Projektordner dorthin pushen.
-3. In GitHub unter `Settings -> Pages` als Quelle `GitHub Actions` auswählen.
-4. Bei jedem Push auf `main` baut der Workflow das Projekt und veröffentlicht `dist/` auf GitHub Pages.
+1. Repository nach GitHub pushen
+2. In GitHub `Settings -> Pages` öffnen
+3. `Source` auf `GitHub Actions` setzen
+4. Workflow aus [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) laufen lassen
 
-Der Workflow liegt in:
+### Manuell
 
-[`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml)
+1. `npm run build`
+2. Inhalt von `dist/` auf ein statisches Hosting hochladen
 
-### Variante B: Manuell veröffentlichen
+## Einschränkungen
 
-1. Lokal `npm install` und `npm run build` ausführen.
-2. Den Inhalt des Ordners `dist/` auf ein statisches Hosting hochladen.
-3. Für GitHub Pages kann alternativ ein eigener Branch oder ein separates Deploy-Werkzeug genutzt werden.
-
-## Abnahme-Checkliste
-
-- Zwei große Rollen-Buttons auf der Startseite
-- Passwortabfrage vor jedem Panel
-- Ganze Karte nur im Beobachter-Panel sichtbar
-- Keine sichtbaren Nachbarfelder im Spieler-Panel
-- Oben, unten, links, rechts funktionieren
-- Wandkollision wird erkannt, kostet Leben und setzt bei 0 Leben zurück
-- Zielerreichung zeigt den Gewinnbildschirm
-- Mobil und Desktop nutzbar
-- Build ist statisch und GitHub-Pages-tauglich
+- Kein Backend, daher keine Live-Synchronisation zwischen Geräten
+- Bilder werden lokal im Browser verarbeitet
+- Sehr große Bilder können wegen `localStorage`-Grenzen nicht dauerhaft gespeichert werden
+- Puzzle-Stücke werden clientseitig erzeugt und geshuffelt; die genaue Form ist bei jeder Neugenerierung anders

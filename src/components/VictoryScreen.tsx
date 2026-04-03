@@ -1,4 +1,5 @@
 import type { PlayerGameState } from '../types/game';
+import { APP_ACCESS_CONFIG } from '../config/appAccessConfig';
 
 interface VictoryScreenProps {
   state: PlayerGameState;
@@ -28,6 +29,10 @@ export function VictoryScreen({
           <div className="metric-card">
             <span>Wandkontakte</span>
             <strong>{state.bumps}</strong>
+          </div>
+          <div className="metric-card">
+            <span>Puzzle-Passwort</span>
+            <strong>{APP_ACCESS_CONFIG.puzzlePassword}</strong>
           </div>
         </div>
 
