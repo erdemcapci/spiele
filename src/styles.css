@@ -118,11 +118,11 @@ input:focus-visible {
 }
 
 .hero-panel {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 24px;
-  padding: 28px;
+  display: inline-block;
+  width: fit-content;
+  padding: 20px;
   border-radius: 30px;
+  margin: 0 auto;
 }
 
 .hero-copy h1,
@@ -156,6 +156,7 @@ input:focus-visible {
 .hero-actions {
   display: grid;
   gap: 16px;
+  min-width: min(100%, 320px);
 }
 
 .role-card {
@@ -203,6 +204,11 @@ input:focus-visible {
 .surface-card {
   border-radius: 24px;
   padding: 22px;
+}
+
+.info-card-compact,
+.surface-card-compact {
+  padding: 16px;
 }
 
 .info-card h2,
@@ -396,12 +402,17 @@ input:focus-visible {
 }
 
 .command-button {
-  min-height: 74px;
-  border-radius: 20px;
+  min-height: 62px;
+  border-radius: 18px;
   display: grid;
   place-items: center;
   gap: 0.25rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.command-button small {
+  font-size: 0.72rem;
+  font-weight: 800;
 }
 
 .field-label {

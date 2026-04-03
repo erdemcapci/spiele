@@ -146,12 +146,6 @@ export default function App() {
     setObserverState(createInitialObserverState(activeMaze));
   }
 
-  function resetAllLocalData() {
-    setPlayerState(createInitialPlayerState(activeMaze));
-    setObserverState(createInitialObserverState(activeMaze));
-    setAccessState(INITIAL_ACCESS_STATE);
-  }
-
   function movePlayer(direction: MoveDirection) {
     setPlayerState((current) => {
       if (current.finished) {
@@ -217,11 +211,7 @@ export default function App() {
   return (
     <>
       {accessState.screen === 'home' ? (
-        <HomeScreen
-          title={GAME_CONFIG.appTitle}
-          onOpenRole={openPasswordModal}
-          onResetLocalData={resetAllLocalData}
-        />
+        <HomeScreen onOpenRole={openPasswordModal} />
       ) : null}
 
       {accessState.screen === 'observer' ? (

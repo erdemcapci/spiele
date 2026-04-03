@@ -21,7 +21,7 @@ export function createInitialPlayerState(maze: MazeDefinition): PlayerGameState 
     moves: 0,
     bumps: 0,
     lives: GAME_CONFIG.maxLives,
-    statusMessage: 'Du stehst am Start. Warte auf die Hinweise des Beobachters.',
+    statusMessage: '',
     finished: false,
   };
 }
@@ -29,8 +29,7 @@ export function createInitialPlayerState(maze: MazeDefinition): PlayerGameState 
 export function createInitialObserverState(maze: MazeDefinition): ObserverState {
   return {
     trackedPosition: { ...maze.start },
-    statusMessage:
-      'Der Beobachter sieht die ganze Karte. Die Marker-Position wird auf diesem Gerät manuell nachgeführt.',
+    statusMessage: '',
   };
 }
 

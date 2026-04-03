@@ -45,18 +45,12 @@ export function PasswordModal({
       >
         <div className="modal-head">
           <div>
-            <p className="eyebrow">Geschützter Bereich</p>
             <h2 id="password-modal-title">{ROLE_TITLES[role]} öffnen</h2>
           </div>
           <button type="button" className="ghost-button" onClick={onClose}>
             Schließen
           </button>
         </div>
-
-        <p className="modal-copy">
-          Bitte gib das passende Passwort ein. Ohne korrektes Passwort bleibt das
-          Panel gesperrt.
-        </p>
 
         <form className="modal-form" onSubmit={handleSubmit}>
           <label className="field-label" htmlFor="role-password">

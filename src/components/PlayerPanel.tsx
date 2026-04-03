@@ -28,12 +28,7 @@ export function PlayerPanel({
     <main className="page-shell page-panel">
       <section className="panel-header">
         <div>
-          <p className="eyebrow">Spieler-Gerät</p>
           <h1>Spieler-Panel</h1>
-          <p className="lead compact">
-            Du siehst das Labyrinth nicht. Folge nur den Ansagen und probiere deine
-            nächsten Schritte vorsichtig aus.
-          </p>
         </div>
 
         <div className="header-actions">
@@ -57,25 +52,24 @@ export function PlayerPanel({
               visiblePath={state.visitedPath}
               ariaLabel="Labyrinth mit bisher besuchtem Weg des Spielers"
             />
-            <p className="view-hint">
-              Du siehst nur deinen bisherigen Weg und deine aktuelle Position.
-            </p>
           </div>
         </article>
 
         <aside className="stack-column">
           <article className="surface-card">
             <h2>Bewegung</h2>
-            <p
-              className={`status-message ${
-                state.statusMessage.includes('Wand') ||
-                state.statusMessage.includes('Leben')
-                  ? 'warning'
-                  : 'info'
-              }`}
-            >
-              {state.statusMessage}
-            </p>
+            {state.statusMessage ? (
+              <p
+                className={`status-message ${
+                  state.statusMessage.includes('Wand') ||
+                  state.statusMessage.includes('Leben')
+                    ? 'warning'
+                    : 'info'
+                }`}
+              >
+                {state.statusMessage}
+              </p>
+            ) : null}
             <div className="control-pad">
               <span className="control-spacer" aria-hidden="true" />
               <button type="button" className="control-button" onClick={onMoveUp}>

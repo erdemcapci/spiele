@@ -27,12 +27,7 @@ export function ObserverPanel({
     <main className="page-shell page-panel">
       <section className="panel-header">
         <div>
-          <p className="eyebrow">Beobachter-Gerät</p>
           <h1>Beobachter-Panel</h1>
-          <p className="lead compact">
-            Du siehst die komplette Karte und verschiebst den Marker manuell nach
-            oben, unten, links oder rechts.
-          </p>
         </div>
 
         <div className="header-actions">
@@ -60,20 +55,7 @@ export function ObserverPanel({
         </article>
 
         <aside className="stack-column">
-          <article className="surface-card">
-            <h2>Marker-Status</h2>
-            <div className="metric-grid">
-              <div className="metric-card">
-                <span>Position</span>
-                <strong>
-                  {state.trackedPosition.x}, {state.trackedPosition.y}
-                </strong>
-              </div>
-            </div>
-            <p className="status-message info">{state.statusMessage}</p>
-          </article>
-
-          <article className="surface-card">
+          <article className="surface-card surface-card-compact">
             <h2>Marker bewegen</h2>
             <div className="command-grid">
               {COMMAND_BUTTONS.map((button) => (
@@ -87,6 +69,18 @@ export function ObserverPanel({
                   <small>{button.label}</small>
                 </button>
               ))}
+            </div>
+          </article>
+
+          <article className="surface-card">
+            <h2>Marker-Status</h2>
+            <div className="metric-grid">
+              <div className="metric-card">
+                <span>Position</span>
+                <strong>
+                  {state.trackedPosition.x}, {state.trackedPosition.y}
+                </strong>
+              </div>
             </div>
           </article>
         </aside>

@@ -14,12 +14,7 @@ export function VictoryScreen({
   return (
     <main className="page-shell victory-shell">
       <section className="victory-card">
-        <p className="eyebrow">Ausgang erreicht</p>
         <h1>Geschafft!</h1>
-        <p className="lead">
-          Der Spieler hat den Ausgang gefunden. Jetzt könnt ihr noch einmal spielen
-          oder die Rollen tauschen.
-        </p>
 
         <div className="victory-metrics">
           <div className="metric-card">
