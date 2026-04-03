@@ -7,6 +7,7 @@ interface PlayerPanelProps {
   state: PlayerGameState;
   onBackHome: () => void;
   onResetPlayer: () => void;
+  onAdminIncreaseLife: () => void;
   onMoveUp: () => void;
   onMoveRight: () => void;
   onMoveDown: () => void;
@@ -17,6 +18,7 @@ export function PlayerPanel({
   state,
   onBackHome,
   onResetPlayer,
+  onAdminIncreaseLife,
   onMoveUp,
   onMoveRight,
   onMoveDown,
@@ -34,6 +36,9 @@ export function PlayerPanel({
         <div className="header-actions">
           <button type="button" className="secondary-button" onClick={onBackHome}>
             Zur Startseite
+          </button>
+          <button type="button" className="secondary-button" onClick={onAdminIncreaseLife}>
+            Admin +1 Leben
           </button>
           <button type="button" className="ghost-button" onClick={onResetPlayer}>
             Spielstand zurücksetzen

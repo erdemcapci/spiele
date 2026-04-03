@@ -58,6 +58,9 @@ function normalizeObserverState(state: ObserverState): ObserverState {
 
 export default function App() {
   const [accessState, setAccessState] = useState<AppAccessState>(INITIAL_ACCESS_STATE);
+  const [adminLifeModalOpen, setAdminLifeModalOpen] = useState(false);
+  const [adminLifePassword, setAdminLifePassword] = useState('');
+  const [adminLifeError, setAdminLifeError] = useState('');
   const [playerState, setPlayerState] = useState<PlayerGameState>(() =>
     normalizePlayerState(
       loadStoredState(GAME_CONFIG.storageKeys.player, createInitialPlayerState(activeMaze)),
@@ -146,6 +149,32 @@ export default function App() {
     setObserverState(createInitialObserverState(activeMaze));
   }
 
+  function openAdminLifeModal() {
+    setAdminLifePassword('');
+    setAdminLifeError('');
+    setAdminLifeModalOpen(true);
+  }
+
+  function closeAdminLifeModal() {
+    setAdminLifePassword('');
+    setAdminLifeError('');
+    setAdminLifeModalOpen(false);
+  }
+
+  function confirmAdminLifeIncrease() {
+    if (adminLifePassword !== GAME_CONFIG.adminPassword) {
+      setAdminLifeError('Das Passwort stimmt nicht.');
+      return;
+    }
+
+    setPlayerState((current) => ({
+      ...current,
+      lives: current.lives + 1,
+      statusMessage: `Admin: 1 Leben hinzugefügt. Jetzt ${current.lives + 1} Leben.`,
+    }));
+    closeAdminLifeModal();
+  }
+
   function movePlayer(direction: MoveDirection) {
     setPlayerState((current) => {
       if (current.finished) {
@@ -229,6 +258,7 @@ export default function App() {
           state={playerState}
           onBackHome={goHome}
           onResetPlayer={resetPlayerGame}
+          onAdminIncreaseLife={openAdminLifeModal}
           onMoveUp={() => movePlayer('up')}
           onMoveRight={() => movePlayer('right')}
           onMoveDown={() => movePlayer('down')}
@@ -250,6 +280,60 @@ export default function App() {
         onClose={closePasswordModal}
         onSubmit={verifyPassword}
       />
+
+      {adminLifeModalOpen ? (
+        <div className="modal-backdrop" role="presentation">
+          <div
+            className="modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="admin-life-modal-title"
+          >
+            <div className="modal-head">
+              <div>
+                <h2 id="admin-life-modal-title">Admin +1 Leben</h2>
+              </div>
+              <button type="button" className="ghost-button" onClick={closeAdminLifeModal}>
+                Schließen
+              </button>
+            </div>
+
+            <form
+              className="modal-form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                confirmAdminLifeIncrease();
+              }}
+            >
+              <label className="field-label" htmlFor="admin-life-password">
+                Passwort
+              </label>
+              <input
+                id="admin-life-password"
+                className="text-input"
+                type="password"
+                value={adminLifePassword}
+                onChange={(event) => setAdminLifePassword(event.target.value)}
+                autoFocus
+                placeholder="Passwort eingeben"
+              />
+
+              {adminLifeError ? <p className="inline-error">{adminLifeError}</p> : null}
+
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={closeAdminLifeModal}
+                >
+                  Abbrechen
+                </button>
+                <button type="submit">+1 Leben</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
     </>
   );
 }

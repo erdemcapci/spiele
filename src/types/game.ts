@@ -42,6 +42,7 @@ export interface AppAccessState {
 export interface GameConfig {
   appTitle: string;
   rolePasswords: Record<Role, string>;
+  adminPassword: string;
   defaultMazeId: string;
   maxLives: number;
   storageKeys: {

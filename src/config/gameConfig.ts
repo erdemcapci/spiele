@@ -7,6 +7,7 @@ export const GAME_CONFIG: GameConfig = {
     observer: 'asli',
     player: 'can',
   },
+  adminPassword: 'mocha',
   defaultMazeId: DEFAULT_MAZE_ID,
   maxLives: 3,
   storageKeys: {
