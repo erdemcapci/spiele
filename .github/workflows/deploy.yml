@@ -18,6 +18,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Repository auschecken
@@ -26,7 +28,7 @@ jobs:
       - name: Node.js einrichten
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Abhängigkeiten installieren
@@ -37,6 +39,8 @@ jobs:
 
       - name: GitHub Pages konfigurieren
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Build-Artefakt hochladen
         uses: actions/upload-pages-artifact@v3
@@ -46,6 +50,8 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
